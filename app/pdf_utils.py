@@ -1,19 +1,17 @@
-from PyPDF2 import PdfReader
-from typing import List, Optional
+from typing import Union
 from io import BytesIO
+from .document_processor import DocumentProcessor
 
-def extract_text_from_pdf(file):
+def extract_text_from_file(file: BytesIO, file_type: str) -> str:
     """
-    Extracts text from a PDF file.
+    Extracts text from various document formats.
 
     Args:
-        file (BytesIO): A BytesIO object containing the PDF file data. 
-                            This is typically obtained from an uploaded file in a web application.  
+        file (BytesIO): A BytesIO object containing the file data.
+        file_type (str): The type of file (pdf, docx, pptx, xlsx, csv, txt)
+                        
     Returns:
-        List[str]: A list of strings, each representing the text from a page in the PDF.
+        str: The extracted text from the document.
     """
-    reader = PdfReader(file)
-    texts = ' '
-    for page in reader.pages:
-        text = texts + page.extract_text() or ''    
-    return text
+    processor = DocumentProcessor()
+    return processor.extract_text(file, file_type)

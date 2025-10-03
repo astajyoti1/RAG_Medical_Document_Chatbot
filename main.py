@@ -1,11 +1,16 @@
 import streamlit as st
 from app.ui import pdf_uploader
-from app.pdf_utils import extract_text_from_pdf
+from app.pdf_utils import extract_text_from_file
 from app.vectorstore_utils import create_faiss_index, retrieve_relevant_docs
 from app.chat_utils import get_chat_model, ask_chat_model
 from app.config import EURI_API_KEY
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import time
+
+def get_file_type(file_name):
+    """Get the file type from the file name."""
+    extension = file_name.split('.')[-1].lower()
+    return extension
 
 
 st.set_page_config(
@@ -101,10 +106,11 @@ with st.sidebar:
         # Process documents
         if st.button("🚀 Process Documents", type="primary"):
             with st.spinner("Processing your medical documents..."):
-                # Extract text from all PDFs
+                # Extract text from all documents
                 all_texts = []
                 for file in uploaded_files:
-                    text = extract_text_from_pdf(file)
+                    file_type = get_file_type(file.name)
+                    text = extract_text_from_file(file, file_type)
                     all_texts.append(text)
                 
                 # Split texts into chunks

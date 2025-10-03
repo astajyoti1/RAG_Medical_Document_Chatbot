@@ -8,3 +8,8 @@ sentence-transformers
 openai
 euriai
 PyPDF2
+python-docx
+python-pptx
+openpyxl
+pandas
+lxml
