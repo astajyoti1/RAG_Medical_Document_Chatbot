@@ -4,7 +4,11 @@ from app.pdf_utils import extract_text_from_file
 from app.vectorstore_utils import create_faiss_index, retrieve_relevant_docs
 from app.chat_utils import get_chat_model, ask_chat_model
 from app.config import EURI_API_KEY
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+try:
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+except ImportError:
+    # Fallback for older LangChain releases.
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
 import time
 
 def get_file_type(file_name):
